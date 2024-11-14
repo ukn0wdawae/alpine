@@ -1,5 +1,6 @@
 module Functor1 where
-
+import Data.Char  
+import Data.List 
 
 -- Types that can act like a box can be functors.
 class Functor f where  
@@ -46,3 +47,17 @@ instance Functor (Either a) where
     fmap f (Right x) = Right (f x)  
     fmap f (Left x) = Left x  
 
+
+
+instance Functor IO where  
+    fmap f action = do  
+        result <- action  
+        return (f result)
+
+main = do line <- fmap (intersperse '-' . reverse . map toUpper) getLine  
+          putStrLn line  
+-- (\xs -> intersperse '-' (reverse (map toUpper xs))) with lambda
+-- $ runhaskell fmapping_io.hs  
+-- hello there  
+-- E-R-E-H-T- -O-L-L-E-H  
+    
